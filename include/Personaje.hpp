@@ -32,13 +32,11 @@ public:
     void Mover(float offsetX, float offsetY)
     {
         sprite.move(offsetX, offsetY);
-  
     }
 
     void Dibujar(sf::RenderWindow &window)
     {
         window.draw(this->sprite);
-        
     }
 
     void Actualizar(){

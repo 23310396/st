@@ -3,20 +3,20 @@
 #include <Personaje.hpp>
 #include <Control.hpp>
 #include <Vida.hpp>
+#include <Campo.hpp>
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "DinoChrome");
+    sf::RenderWindow window(sf::VideoMode(640, 435), "DinoChrome");
 
-    // Barra de vida (frente)
-    sf::RectangleShape lifeBar(sf::Vector2f(200, 650));
-    lifeBar.setFillColor(sf::Color::Green);
 
     Control control1;
     Control control2(sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::D, sf::Keyboard::A);
 
-    Personaje Ken(sf::Vector2f(600, 350), "ken.png", control1);
-    Personaje pika(sf::Vector2f(100, 350), "pikachu.png", control2);
+    Vida Barra_de_vida(sf::Vector2f(200, 20));
+    Campo Campo("25.png");
+    Personaje Ken(sf::Vector2f(440, 220), "ken.png", control1);
+    Personaje pika(sf::Vector2f(130, 220), "pikachu.png", control2);
 
     while (window.isOpen())
     {
@@ -40,7 +40,8 @@ int main()
 
         // Dibujar objetos
         window.clear();
-        lifeBar.Dibujar(window);
+        Barra_de_vida.Dibujar(window);
+        Campo.Dibujar(window);
         Ken.Dibujar(window);
         pika.Dibujar(window);
         window.display();

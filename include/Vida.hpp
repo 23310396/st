@@ -3,19 +3,25 @@
 
  class Vida
  {
+
  private:
-    float maxLife = 100.f;
-    float currentLife = maxLife;
+   sf::Sprite lifebar;
+   float maxLife = 100.f;
+   float currentLife = maxLife;
 
  public:
     Vida()
     {
-        // Barra de vida (frente)
-        sf::RectangleShape lifeBar(sf::Vector2f(200.f, 20.f));
+        // Barra de vida 
+        sf::RectangleShape lifeBar(sf::Vector2f(200, 20));
         lifeBar.setFillColor(sf::Color::Green);
-        lifeBar.setPosition(50.f, 50.f);
+        lifeBar.setPosition(50, 50);
 
     }
-    ~Vida();
+    
+     void Dibujar(sf::RenderWindow &window)
+    {
+        window.draw(this->lifebar);
+    }
  };
  
