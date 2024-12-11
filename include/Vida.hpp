@@ -1,27 +1,55 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
- class Vida
- {
+class HealthBar
+{
+public:
+  HealthBar(int maxHealth, sf::Vector2f size, sf::Vector2f position);
+  void takeDamage(int damage);
+  void heal(int amount);
+  void draw(sf::RenderWindow &window) const;
 
- private:
-   sf::Sprite lifebar;
-   float maxLife = 100.f;
-   float currentLife = maxLife;
+private:
+  int maxHealth;
+  int currentHealth;
+  sf::RectangleShape backgroundBar;
+  sf::RectangleShape healthBar;
+};
 
- public:
-    Vida()
-    {
-        // Barra de vida 
-        sf::RectangleShape lifeBar(sf::Vector2f(200, 20));
-        lifeBar.setFillColor(sf::Color::Green);
-        lifeBar.setPosition(50, 50);
+HealthBar::HealthBar(int maxHealth, sf::Vector2f size, sf::Vector2f position)
+    : maxHealth(maxHealth), currentHealth(maxHealth),
+      backgroundBar(size), healthBar(size)
+{
 
-    }
-    
-     void Dibujar(sf::RenderWindow &window)
-    {
-        window.draw(this->lifebar);
-    }
- };
- 
+  backgroundBar.setPosition(position);
+  backgroundBar.setFillColor(sf::Color(50, 50, 50));
+
+  healthBar.setPosition(position);
+  healthBar.setFillColor(sf::Color(100, 250, 50));
+}
+
+void HealthBar::takeDamage(int damage)
+{
+  currentHealth -= damage;
+  if (currentHealth < 0)
+    currentHealth = 0;
+
+  float healthPercentage = static_cast<float>(currentHealth) / maxHealth;
+  healthBar.setSize({healthBar.getSize().x * healthPercentage, healthBar.getSize().y});
+}
+
+void HealthBar::heal(int amount)
+{
+  currentHealth += amount;
+  if (currentHealth > maxHealth)
+    currentHealth = maxHealth;
+
+  float healthPercentage = static_cast<float>(currentHealth) / maxHealth;
+  healthBar.setSize({healthBar.getSize().x * healthPercentage, healthBar.getSize().y});
+}
+
+void HealthBar::draw(sf::RenderWindow &window) const
+{
+  window.draw(backgroundBar);
+  window.draw(healthBar);
+}

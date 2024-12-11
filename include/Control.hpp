@@ -8,7 +8,7 @@ private:
     sf::Keyboard::Key abajo;
     sf::Keyboard::Key derecha;
     sf::Keyboard::Key izquierda;
-    
+
 public:
     Control()
     {
@@ -28,16 +28,20 @@ public:
         this->izquierda = izquierda;
     }
     ~Control() {}
-    sf::Keyboard::Key MoverArriba(){
+    sf::Keyboard::Key MoverArriba()
+    {
         return this->arriba;
     }
-    sf::Keyboard::Key MoverAbajo(){
+    sf::Keyboard::Key MoverAbajo()
+    {
         return this->abajo;
     }
-    sf::Keyboard::Key MoverIzquierda(){
+    sf::Keyboard::Key MoverIzquierda()
+    {
         return this->izquierda;
     }
-    sf::Keyboard::Key MoverDerecha(){
+    sf::Keyboard::Key MoverDerecha()
+    {
         return this->derecha;
     }
 };

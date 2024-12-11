@@ -9,14 +9,14 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(640, 435), "DinoChrome");
 
-
     Control control1;
     Control control2(sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::D, sf::Keyboard::A);
 
-    Vida Barra_de_vida(sf::Vector2f(200, 20));
+    HealthBar playerHealth_1(100, {250, 30}, {381, 55});
+    HealthBar playerHealth_2(100, {250, 30}, {8, 55});
     Campo Campo("25.png");
-    Personaje Ken(sf::Vector2f(440, 220), "ken.png", control1);
-    Personaje pika(sf::Vector2f(130, 220), "pikachu.png", control2);
+    Personaje Ken(sf::Vector2f(440, 240), "ken.png", control1);
+    Personaje pika(sf::Vector2f(130, 240), "pikachu.png", control2);
 
     while (window.isOpen())
     {
@@ -33,17 +33,17 @@ int main()
         Ken.LeerTeclado();
         pika.LeerTeclado();
 
-
         // Actualizar objetos
         Ken.Actualizar();
         pika.Actualizar();
 
         // Dibujar objetos
         window.clear();
-        Barra_de_vida.Dibujar(window);
         Campo.Dibujar(window);
         Ken.Dibujar(window);
         pika.Dibujar(window);
+        playerHealth_1.draw(window);
+        playerHealth_2.draw(window);
         window.display();
     }
 

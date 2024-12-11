@@ -39,17 +39,19 @@ public:
         window.draw(this->sprite);
     }
 
-    void Actualizar(){
+    void Actualizar()
+    {
         // Actualizar el frame de la animación
         if (clock.getElapsedTime().asSeconds() >= frameTime)
         {
             cuadroActual = (cuadroActual + 1) % numFrames;
-            sprite.setTextureRect(sf::IntRect((cuadroActual * 64)+17, 133, 64, 36));
+            sprite.setTextureRect(sf::IntRect((cuadroActual * 64) + 17, 133, 64, 36));
             clock.restart();
         }
     }
 
-    void LeerTeclado(){
+    void LeerTeclado()
+    {
         if (sf::Keyboard::isKeyPressed(control.MoverIzquierda()))
         {
             this->Mover(velocidad * -1, 0);
@@ -67,5 +69,4 @@ public:
             this->Mover(0, velocidad);
         }
     }
-
 };
