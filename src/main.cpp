@@ -4,17 +4,57 @@
 #include <Control.hpp>
 #include <Vida.hpp>
 #include <Campo.hpp>
-#include <Menu.hpp>
+#include <Menu.hpp">
+#include <iostream>
+
+// Función de colisión y resolución
+bool checkCollision(Personaje &p1, Personaje &p2)
+{
+    if (p1.getBounds().intersects(p2.getBounds()))
+    {
+        sf::FloatRect intersection;
+        p1.getBounds().intersects(p2.getBounds(), intersection);
+
+        if (intersection.width < intersection.height)
+        {
+            if (p1.getSprite().getPosition().x < p2.getSprite().getPosition().x)
+            {
+                p1.Mover(-intersection.width, 0);
+                p2.Mover(intersection.width, 0);
+            }
+            else
+            {
+                p1.Mover(intersection.width, 0);
+                p2.Mover(-intersection.width, 0);
+            }
+        }
+        else
+        {
+            if (p1.getSprite().getPosition().y < p2.getSprite().getPosition().y)
+            {
+                p1.Mover(0, -intersection.height);
+                p2.Mover(0, intersection.height);
+            }
+            else
+            {
+                p1.Mover(0, intersection.height);
+                p2.Mover(0, -intersection.height);
+            }
+        }
+        return true;
+    }
+    return false;
+}
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(640, 435), "DinoChrome");
+    sf::RenderWindow window(sf::VideoMode(640, 435), "st");
 
     Control control1;
     Control control2(sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::D, sf::Keyboard::A);
 
     std::vector<std::string> menuItems = {"Mapa 1", "Mapa 2", "Mapa 3"};
-    std::vector<std::string> mapFiles = {"1.png", "2.png", "3.png"};
+    std::vector<std::string> mapFiles = {"1.png", "25.png", "11.png"};
     Game game(640, 435, menuItems, mapFiles);
     game.run();
 
@@ -31,7 +71,7 @@ int main()
             if (event.type == sf::Event::Closed)
             {
                 window.close();
-            }  
+            }
         }
 
         // Leer el teclado
@@ -41,6 +81,12 @@ int main()
         // Actualizar objetos
         Ken.Actualizar();
         pika.Actualizar();
+
+        // Verificar y resolver colisiones
+        if (checkCollision(Ken, pika))
+        {
+            std::cout << "Collision detected and resolved!" << std::endl;
+        }
 
         // Dibujar objetos
         window.clear();

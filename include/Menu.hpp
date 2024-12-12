@@ -34,7 +34,7 @@ private:
 // Implementación de los métodos
 
 Game::Game(float width, float height, const std::vector<std::string> &menuItems, const std::vector<std::string> &mapFiles)
-    : window(sf::VideoMode(width, height), "Menu and Map Selector"),
+    : window(sf::VideoMode(width, height), "Menu de st"),
       menuItemsText(menuItems.size()), mapFiles(mapFiles), selectedItemIndex(0), isMenuActive(true)
 {
     if (!font.loadFromFile("path/to/your/font.ttf"))
