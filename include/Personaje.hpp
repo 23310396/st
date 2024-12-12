@@ -1,6 +1,6 @@
-#pragma once
 #include <SFML/Graphics.hpp>
-#include <Control.hpp>
+#include "Control.hpp"
+#include <iostream>
 
 class Personaje
 {
@@ -8,23 +8,24 @@ private:
     double velocidad = 0.1;
     sf::Texture texture;
     sf::Clock clock;
-    float frameTime = 0.1f; // Tiempo entre cada frame en segundos
+    float frameTime = 0.1f;
     int cuadroActual = 0;
-    int numFrames = 4; // Número total de frames en la animación
+    int numFrames = 4;
     int frameWidth = 32;
     int frameHeight = 32;
     Control control;
 
 public:
+    bool atacando = false; // Estado de ataque
     sf::Sprite sprite;
     Personaje(sf::Vector2f position, std::string imagen, Control control);
-
     void Mover(float offsetX, float offsetY);
     void Dibujar(sf::RenderWindow &window);
     void Actualizar();
     void LeerTeclado();
-    const sf::Sprite &getSprite() const; // Método para obtener el sprite
-    sf::FloatRect getBounds() const;     // Método para obtener los límites
+    const sf::Sprite &getSprite() const;
+    sf::FloatRect getBounds() const;
+    void atacar(); // Nuevo método para atacar
 };
 
 Personaje::Personaje(sf::Vector2f position, std::string imagen, Control control)
@@ -33,10 +34,10 @@ Personaje::Personaje(sf::Vector2f position, std::string imagen, Control control)
     // Cargar la imagen desde un archivo
     if (!texture.loadFromFile("assets/images/" + imagen))
     {
-        throw "No se encontro imagen";
+        throw "No se encontró imagen";
     }
     this->sprite = sf::Sprite(texture);
-    this->sprite.setPosition(position); // Posición inicial sprite
+    this->sprite.setPosition(position); // Posición inicial del sprite
 }
 
 void Personaje::Mover(float offsetX, float offsetY)
@@ -51,6 +52,11 @@ void Personaje::Dibujar(sf::RenderWindow &window)
 
 void Personaje::Actualizar()
 {
+    if (atacando)
+    {
+        // Reseteamos el estado de ataque después de un breve periodo
+        atacando = false;
+    }
     // Actualizar el frame de la animación
     if (clock.getElapsedTime().asSeconds() >= frameTime)
     {
@@ -78,6 +84,18 @@ void Personaje::LeerTeclado()
     {
         this->Mover(0, velocidad);
     }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+    { // Tecla de ataque
+        atacar();
+        std::cout << "Ataque ejecutado!" << std::endl;
+    }
+}
+
+void Personaje::atacar()
+{
+    atacando = true;
+    // Aquí podrías agregar animaciones de ataque o cualquier otra lógica
+    std::cout << "Personaje está atacando!" << std::endl;
 }
 
 const sf::Sprite &Personaje::getSprite() const

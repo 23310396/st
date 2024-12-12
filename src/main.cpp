@@ -1,10 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include <Personaje.hpp>
-#include <Control.hpp>
-#include <Vida.hpp>
-#include <Campo.hpp>
-#include <Menu.hpp">
+#include "Personaje.hpp"
+#include "Control.hpp"
+#include "Vida.hpp"
+#include "Menu.hpp"
 #include <iostream>
 
 // Función de colisión y resolución
@@ -86,6 +85,18 @@ int main()
         if (checkCollision(Ken, pika))
         {
             std::cout << "Collision detected and resolved!" << std::endl;
+        }
+
+        // Lógica de ataque y reducción de vida
+        if (Ken.atacando && checkCollision(Ken, pika))
+        {
+            playerHealth_2.takeDamage(10); // Reduce la vida de pika
+            Ken.atacando = false;          // Resetea el estado de ataque después de atacar
+        }
+        if (pika.atacando && checkCollision(pika, Ken))
+        {
+            playerHealth_1.takeDamage(10); // Reduce la vida de Ken
+            pika.atacando = false;         // Resetea el estado de ataque después de atacar
         }
 
         // Dibujar objetos
