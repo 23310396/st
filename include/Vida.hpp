@@ -8,6 +8,7 @@ public:
   void takeDamage(int damage);
   void heal(int amount);
   void draw(sf::RenderWindow &window) const;
+  int getCurrentHealth() const; // Nuevo método para obtener la salud actual
 
 private:
   int maxHealth;
@@ -52,4 +53,9 @@ void HealthBar::draw(sf::RenderWindow &window) const
 {
   window.draw(backgroundBar);
   window.draw(healthBar);
+}
+
+int HealthBar::getCurrentHealth() const
+{
+  return currentHealth; // Devuelve la salud actual
 }

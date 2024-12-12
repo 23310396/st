@@ -71,11 +71,9 @@ int main()
             {
                 window.close();
             }
-            // Leer el teclado
-            Ken.LeerTeclado();
-            pika.LeerTeclado();
         }
 
+        // Leer el teclado
         Ken.LeerTeclado();
         pika.LeerTeclado();
 
@@ -92,13 +90,15 @@ int main()
         // Lógica de ataque y reducción de vida
         if (Ken.atacando && checkCollision(Ken, pika))
         {
-            playerHealth_2.takeDamage(10); // Reduce la vida de pika
-            Ken.atacando = false;          // Resetea el estado de ataque después de atacar
+            playerHealth_2.takeDamage(10);// Reduce la vida de pika
+            Ken.atacando = false;// Resetea el estado de ataque después de atacar
+            std::cout << "Vida de pika: " << playerHealth_2.getCurrentHealth() << std::endl; // Mensaje de depuración
         }
         if (pika.atacando && checkCollision(pika, Ken))
         {
-            playerHealth_1.takeDamage(10); // Reduce la vida de Ken
-            pika.atacando = false;         // Resetea el estado de ataque después de atacar
+            playerHealth_1.takeDamage(10);// Reduce la vida de Ken
+            pika.atacando = false;// Resetea el estado de ataque después de atacar
+            std::cout << "Vida de Ken: " << playerHealth_1.getCurrentHealth() << std::endl; // Mensaje de depuración
         }
 
         // Dibujar objetos
