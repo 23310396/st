@@ -71,11 +71,11 @@ int main()
             {
                 window.close();
             }
+            // Leer el teclado
+            Ken.LeerTeclado();
+            pika.LeerTeclado();
         }
 
-        // Leer el teclado
-        Ken.LeerTeclado();
-        pika.LeerTeclado();
 
         // Actualizar objetos
         Ken.Actualizar();
