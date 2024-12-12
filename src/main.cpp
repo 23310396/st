@@ -76,6 +76,8 @@ int main()
             pika.LeerTeclado();
         }
 
+        Ken.LeerTeclado();
+        pika.LeerTeclado();
 
         // Actualizar objetos
         Ken.Actualizar();

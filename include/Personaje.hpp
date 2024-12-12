@@ -95,7 +95,7 @@ void Personaje::atacar()
 {
     atacando = true;
     // Aquí podrías agregar animaciones de ataque o cualquier otra lógica
-    std::cout << "Personaje está atacando!" << std::endl;
+    std::cout << "Personaje esta atacando!" << std::endl;
 }
 
 const sf::Sprite &Personaje::getSprite() const
