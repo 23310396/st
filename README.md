@@ -15,7 +15,7 @@ En un mundo donde la electricidad es el poder supremo, dos Pikachus se enfrentan
      - **Moverse**: Usa las teclas `WASD`.
      - **Atacar**: Presiona la tecla `F`.
    - **Jugador 2**:
-     - **Moverse**: Usa las flechas .
+     - **Moverse**: Usa las `FLECHAS` .
      - **Atacar**: Presiona la tecla `L`.
 3. **Objetivo**: Derrota al otro Pikachu para ganar la herencia.
 
@@ -23,14 +23,13 @@ En un mundo donde la electricidad es el poder supremo, dos Pikachus se enfrentan
 
 ### Cómo Compilar el Juego
 1. **Clona el Repositorio**:
-   ```bash
-   git clone https://github.com/23310396/st.git
+   `git clone https://github.com/23310396/st.git`
 2. **Navega a la Carpeta del Proyecto**
-    cd st
+    `cd st`
 3. **Compila el Codigo**
-    make runmain
+    `make runmain`
 4. **Ejecuta el Juego**
-    ./bin/main.exe
+    `./bin/main.exe`
     
 ## Diagrama de Clases
 ![No se Pudo Cargar la Imagen](./docs/Diagrama.png)

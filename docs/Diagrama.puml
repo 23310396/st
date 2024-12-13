@@ -38,6 +38,6 @@ Menu "1" --o "1" Juego : usa
 Control "1" --o "1" Juego : usa
 Personaje "1" --|> "1..*" Control : es
 Campo "1" --* "1" Juego : tiene
-Vida "0..*" --* "1" Personaje : tiene
+Vida "100" --* "1" Personaje : tiene
 
 @enduml
