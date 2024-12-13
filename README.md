@@ -16,7 +16,7 @@ En un mundo donde la electricidad es el poder supremo, dos Pikachus se enfrentan
      - **Atacar**: Presiona la tecla `F`.
    - **Jugador 2**:
      - **Moverse**: Usa las flechas .
-     - **Atacar**: Presiona la tecla `Ñ`.
+     - **Atacar**: Presiona la tecla `L`.
 3. **Objetivo**: Derrota al otro Pikachu para ganar la herencia.
 
 ## Manual para el Programador
