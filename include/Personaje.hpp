@@ -16,10 +16,12 @@ private:
     int frameHeight = 32;
     Control control;
     Vida healthBar; // Usar la clase Vida
+    int score = 0;  // Variable para almacenar el puntaje
 
 public:
     bool atacando = false; // Estado de ataque
     sf::Sprite sprite;
+
     Personaje(sf::Vector2f position, std::string imagen, Control control, sf::Vector2f healthBarPosition);
     void Mover(float offsetX, float offsetY);
     void Dibujar(sf::RenderWindow &window);
@@ -30,6 +32,10 @@ public:
     void Atacar();
     void takeDamage(int damage); // Método para reducir vida
     int getHealth() const;       // Nuevo método para obtener la salud actual
+
+    // Métodos para manejar el puntaje
+    void increaseScore(int points); // Método para aumentar el puntaje
+    int getScore() const;           // Método para obtener el puntaje
 };
 
 // Implementación de la clase Personaje
@@ -126,4 +132,16 @@ const sf::Sprite &Personaje::getSprite() const
 sf::FloatRect Personaje::getBounds() const
 {
     return sprite.getGlobalBounds();
+}
+
+// Método para aumentar el puntaje
+void Personaje::increaseScore(int points)
+{
+    score += points;
+}
+
+// Método para obtener el puntaje
+int Personaje::getScore() const
+{
+    return score;
 }

@@ -53,6 +53,16 @@ int main()
     Control control2(sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::D, sf::Keyboard::A);
 
     Campo campo("25.png");
+
+    // Cargar la fuente para el puntaje
+    sf::Font font;
+    if (!font.loadFromFile("./assets/fonts/Minecraft.ttf"))
+    {
+        // Manejar el error si no se puede cargar la fuente
+        return -1;
+    }
+
+    // Crear los personajes
     Personaje Ken(sf::Vector2f(440, 240), "pikachu.png", control1, {381, 55});
     Personaje pika(sf::Vector2f(130, 240), "pikachu.png", control2, {8, 55});
 
@@ -69,7 +79,7 @@ int main()
 
         // Leer el teclado con teclas de ataque diferentes
         Ken.LeerTeclado(sf::Keyboard::K);  // Tecla de ataque para Ken
-        pika.LeerTeclado(sf::Keyboard::F); // Tecla de ataque para pika
+        pika.LeerTeclado(sf::Keyboard::F); // Tecla de ataque para Pika
 
         // Actualizar objetos
         Ken.Actualizar();
@@ -84,7 +94,7 @@ int main()
         // Lógica de ataque y reducción de vida
         if (Ken.atacando && checkCollision(Ken, pika))
         {
-            pika.takeDamage(10);  // Reduce la vida de pika
+            pika.takeDamage(10);  // Reduce la vida de Pika
             Ken.atacando = false; // Resetea el estado de ataque después de atacar
         }
         if (pika.atacando && checkCollision(pika, Ken))
@@ -105,6 +115,17 @@ int main()
         campo.Dibujar(window);
         Ken.Dibujar(window);
         pika.Dibujar(window);
+
+        // Mostrar el puntaje de ambos personajes
+        sf::Text scoreText;
+        scoreText.setFont(font);
+        scoreText.setString("Puntaje de Ken: " + std::to_string(Ken.getScore()) + "  |  Puntaje de Pika: " + std::to_string(pika.getScore()));
+        scoreText.setCharacterSize(24);
+        scoreText.setFillColor(sf::Color::White);
+        scoreText.setPosition(10, 10); // Ajusta la posición de acuerdo a tu preferencia
+
+        window.draw(scoreText); // Dibujar el puntaje
+
         window.display();
     }
 

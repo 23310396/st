@@ -18,27 +18,21 @@ private:
   sf::Text healthText;
 };
 
- sf::Font font;
-  if (!font.loadFromFile("./assets/fonts/Minecraft.ttf"))
-  {
-    // Manejar el error si no se puede cargar la fuente
-    return -1;
-  }
-
-Vida::Vida(int maxHealth, sf::Vector2f position,)
+Vida::Vida(int maxHealth, sf::Vector2f position)
     : maxHealth(maxHealth), currentHealth(maxHealth)
 {
-  sf::Font font;
+  // Cargar la fuente para el texto de la vida
   if (!font.loadFromFile("./assets/fonts/Minecraft.ttf"))
   {
     // Manejar el error si no se puede cargar la fuente
-    return -1;
+    throw std::runtime_error("No se pudo cargar la fuente");
   }
 
+  // Configurar el objeto de texto que mostrará la vida
   healthText.setFont(font);
-  healthText.setCharacterSize(24);
-  healthText.setFillColor(sf::Color::Red);
-  healthText.setPosition(position);
+  healthText.setCharacterSize(24);         // Tamaño del texto
+  healthText.setFillColor(sf::Color::Red); // Color del texto
+  healthText.setPosition(position);        // Posición en la ventana
   healthText.setString(std::to_string(currentHealth) + "/" + std::to_string(maxHealth));
 }
 
