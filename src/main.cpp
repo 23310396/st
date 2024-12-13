@@ -32,19 +32,19 @@ public:
         }
 
         text.setFont(font);
-        text.setString("Bienvenido a ST\nPresiona Enter para jugar");
+        text.setString("Bienvenido a Street pikachu\nPresiona Enter para jugar");
         text.setCharacterSize(30);
         text.setFillColor(sf::Color::Black);
-        text.setPosition(160, 180);
+        text.setPosition(120, 180);
     }
 
-    void Dibujar(sf::RenderWindow &window)
+    void dibujar(sf::RenderWindow &window)
     {
         window.draw(this->sprite);
         window.draw(text);
     }
 
-    bool IniciarJuego()
+    bool iniciarJuego()
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
         {
@@ -53,7 +53,7 @@ public:
         return false;
     }
 
-    void Actualizar()
+    void actualizar()
     {
         if (clock.getElapsedTime().asSeconds() >= switchTime)
         {
@@ -89,10 +89,11 @@ public:
     Control() : arriba(sf::Keyboard::Up), abajo(sf::Keyboard::Down), derecha(sf::Keyboard::Right), izquierda(sf::Keyboard::Left) {}
     Control(sf::Keyboard::Key arriba, sf::Keyboard::Key abajo, sf::Keyboard::Key derecha, sf::Keyboard::Key izquierda)
         : arriba(arriba), abajo(abajo), derecha(derecha), izquierda(izquierda) {}
-    sf::Keyboard::Key MoverArriba() { return arriba; }
-    sf::Keyboard::Key MoverAbajo() { return abajo; }
-    sf::Keyboard::Key MoverIzquierda() { return izquierda; }
-    sf::Keyboard::Key MoverDerecha() { return derecha; }
+
+    sf::Keyboard::Key moverArriba() { return arriba; }
+    sf::Keyboard::Key moverAbajo() { return abajo; }
+    sf::Keyboard::Key moverIzquierda() { return izquierda; }
+    sf::Keyboard::Key moverDerecha() { return derecha; }
 };
 
 // Clase Vida
@@ -128,7 +129,7 @@ public:
         healthText.setString(std::to_string(currentHealth) + "/" + std::to_string(maxHealth));
     }
 
-    void draw(sf::RenderWindow &window)
+    void dibujar(sf::RenderWindow &window)
     {
         sf::RectangleShape healthBar(sf::Vector2f(static_cast<float>(currentHealth) / maxHealth * 100, 10));
         healthBar.setFillColor(sf::Color::Red);
@@ -174,18 +175,18 @@ public:
         sprite.setPosition(position);
     }
 
-    void Mover(float offsetX, float offsetY)
+    void mover(float offsetX, float offsetY)
     {
         sprite.move(offsetX, offsetY);
     }
 
-    void Dibujar(sf::RenderWindow &window)
+    void dibujar(sf::RenderWindow &window)
     {
         window.draw(sprite);
-        healthBar.draw(window);
+        healthBar.dibujar(window);
     }
 
-    void Actualizar()
+    void actualizar()
     {
         if (clock.getElapsedTime().asSeconds() >= frameTime)
         {
@@ -203,23 +204,23 @@ public:
         }
     }
 
-    void LeerTeclado(sf::Keyboard::Key teclaAtaque)
+    void leerTeclado(sf::Keyboard::Key teclaAtaque)
     {
-        if (sf::Keyboard::isKeyPressed(control.MoverIzquierda()))
+        if (sf::Keyboard::isKeyPressed(control.moverIzquierda()))
         {
-            Mover(-velocidad, 0);
+            mover(-velocidad, 0);
             sprite.setScale(-1.f, 1.f); // Voltear el sprite horizontalmente
         }
-        else if (sf::Keyboard::isKeyPressed(control.MoverDerecha()))
+        else if (sf::Keyboard::isKeyPressed(control.moverDerecha()))
         {
-            Mover(velocidad, 0);
+            mover(velocidad, 0);
             sprite.setScale(1.f, 1.f); // Restaurar el sprite a su orientación original
         }
 
-        if (sf::Keyboard::isKeyPressed(control.MoverArriba()))
-            Mover(0, -velocidad);
-        if (sf::Keyboard::isKeyPressed(control.MoverAbajo()))
-            Mover(0, velocidad);
+        if (sf::Keyboard::isKeyPressed(control.moverArriba()))
+            mover(0, -velocidad);
+        if (sf::Keyboard::isKeyPressed(control.moverAbajo()))
+            mover(0, velocidad);
 
         // Solo atacar si la tecla de ataque está presionada y el personaje puede atacar
         if (sf::Keyboard::isKeyPressed(teclaAtaque) && puedeAtacar)
@@ -271,26 +272,26 @@ public:
             {
                 if (p1.sprite.getPosition().x < p2.sprite.getPosition().x)
                 {
-                    p1.Mover(-interseccion.width / 2, 0);
-                    p2.Mover(interseccion.width / 2, 0);
+                    p1.mover(-interseccion.width / 2, 0);
+                    p2.mover(interseccion.width / 2, 0);
                 }
                 else
                 {
-                    p1.Mover(interseccion.width / 2, 0);
-                    p2.Mover(-interseccion.width / 2, 0);
+                    p1.mover(interseccion.width / 2, 0);
+                    p2.mover(-interseccion.width / 2, 0);
                 }
             }
             else
             {
                 if (p1.sprite.getPosition().y < p2.sprite.getPosition().y)
                 {
-                    p1.Mover(0, -interseccion.height / 2);
-                    p2.Mover(0, interseccion.height / 2);
+                    p1.mover(0, -interseccion.height / 2);
+                    p2.mover(0, interseccion.height / 2);
                 }
                 else
                 {
-                    p1.Mover(0, interseccion.height / 2);
-                    p2.Mover(0, -interseccion.height / 2);
+                    p1.mover(0, interseccion.height / 2);
+                    p2.mover(0, -interseccion.height / 2);
                 }
             }
 
@@ -319,7 +320,7 @@ public:
         this->sprite = sf::Sprite(texture);
     }
 
-    void Dibujar(sf::RenderWindow &window)
+    void dibujar(sf::RenderWindow &window)
     {
         window.draw(this->sprite);
     }
@@ -340,8 +341,8 @@ int main()
     Control control1;
     Control control2(sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::D, sf::Keyboard::A);
 
-    Personaje Ken(sf::Vector2f(440, 240), "pikachu.png", control1, {381, 55});
-    Personaje Pika(sf::Vector2f(130, 240), "pikachu.png", control2, {8, 55});
+    Personaje ken(sf::Vector2f(440, 240), "pikachu.png", control1, {381, 55});
+    Personaje pika(sf::Vector2f(130, 240), "pikachu.png", control2, {8, 55});
 
     // Crear el texto de victoria
     sf::Text winText;
@@ -363,16 +364,16 @@ int main()
         }
 
         // Actualizar el menú (para cambiar las imágenes)
-        menu.Actualizar();
+        menu.actualizar();
 
         // Si se presiona Enter, iniciar el juego
-        if (menu.IniciarJuego())
+        if (menu.iniciarJuego())
         {
             break; // Salir del ciclo de menú y comenzar el juego
         }
 
         window.clear();
-        menu.Dibujar(window); // Dibujar el menú (que incluye la imagen y el texto)
+        menu.dibujar(window); // Dibujar el menú (que incluye la imagen y el texto)
         window.display();
     }
 
@@ -386,21 +387,21 @@ int main()
                 window.close();
         }
 
-        Ken.LeerTeclado(sf::Keyboard::K);
-        Pika.LeerTeclado(sf::Keyboard::F);
+        ken.leerTeclado(sf::Keyboard::K);
+        pika.leerTeclado(sf::Keyboard::F);
 
-        Ken.Actualizar();
-        Pika.Actualizar();
+        ken.actualizar();
+        pika.actualizar();
 
-        Colision::manejar(Ken, Pika);
+        Colision::manejar(ken, pika);
 
         // Comprobar si alguien ha ganado
-        if (Ken.getHealth() == 0)
+        if (ken.getHealth() == 0)
         {
             winner = "¡Gano Pika!";
             gameOver = true;
         }
-        else if (Pika.getHealth() == 0)
+        else if (pika.getHealth() == 0)
         {
             winner = "¡Gano Ken!";
             gameOver = true;
@@ -424,9 +425,9 @@ int main()
         else
         {
             // Si el juego no ha terminado, se sigue actualizando y dibujando los personajes
-            campo.Dibujar(window);
-            Ken.Dibujar(window);
-            Pika.Dibujar(window);
+            campo.dibujar(window);
+            ken.dibujar(window);
+            pika.dibujar(window);
         }
 
         window.display();
