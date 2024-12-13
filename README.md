@@ -9,7 +9,7 @@ En un mundo donde la electricidad es el poder supremo, dos Pikachus se enfrentan
 ## Manual de Usuario
 
 ### Cómo Jugar
-1. **Inicio del Juego**: Ejecuta el archivo `start_game.exe`.
+1. **Inicio del Juego**: Ejecuta el archivo `./bin/main.exe`.
 2. **Controles**:
    - **Jugador 1**:
      - **Moverse**: Usa las teclas `WASD`.
@@ -33,3 +33,6 @@ En un mundo donde la electricidad es el poder supremo, dos Pikachus se enfrentan
     
 ## Diagrama de Clases
 ![No se Pudo Cargar la Imagen](./docs/Diagrama.png)
+## Imagenes de Muestra
+![No se Pudo Cargar la Imagen](./docs/ImagenApoyo.jpg)
+![No se Pudo Cargar la Imagen](./docs/ImagenApoyo2.jpg)
