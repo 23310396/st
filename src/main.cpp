@@ -3,80 +3,76 @@
 #include <string>
 #include <iostream>
 
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include <string>
-#include <iostream>
-
 class Menu
 {
 private:
     sf::Sprite sprite;
     sf::Texture texture;
-    sf::Font font;
+    sf::Font font; // Esta sigue siendo privada
     sf::Text text;
-    std::vector<std::string> imagePaths; // Vector para almacenar las rutas de las imágenes
-    int currentImageIndex = 0;           // Índice de la imagen actual
-    sf::Clock clock;                     // Reloj para controlar el cambio de imágenes
-    float switchTime = 1.0f;             // Tiempo en segundos entre cambio de imágenes
+    std::vector<std::string> imagePaths;
+    int currentImageIndex = 0;
+    sf::Clock clock;
+    float switchTime = 1.0f;
 
 public:
     Menu(std::vector<std::string> imagenes)
     {
         imagePaths = imagenes;
 
-        // Cargar la primera imagen
         if (!texture.loadFromFile("assets/images/" + imagePaths[currentImageIndex]))
         {
             throw "No se encontró imagen";
         }
         sprite = sf::Sprite(texture);
 
-        // Cargar la fuente
         if (!font.loadFromFile("assets/fonts/Minecraft.ttf"))
         {
             throw "No se pudo cargar la fuente";
         }
 
-        // Configurar el texto
         text.setFont(font);
         text.setString("Bienvenido a ST\nPresiona Enter para jugar");
-        text.setCharacterSize(30);           // Tamaño del texto
-        text.setFillColor(sf::Color::Black); // Color blanco para el texto
-        text.setPosition(160, 180);          // Posición del texto en la pantalla
+        text.setCharacterSize(30);
+        text.setFillColor(sf::Color::Black);
+        text.setPosition(160, 180);
     }
 
     void Dibujar(sf::RenderWindow &window)
     {
-        window.draw(this->sprite); // Dibujar la imagen
-        window.draw(text);         // Dibujar el texto
+        window.draw(this->sprite);
+        window.draw(text);
     }
 
     bool IniciarJuego()
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
         {
-            return true; // Si se presiona Enter, se retorna true para iniciar el juego
+            return true;
         }
-        return false; // Si no, se sigue esperando
+        return false;
     }
 
     void Actualizar()
     {
         if (clock.getElapsedTime().asSeconds() >= switchTime)
         {
-            // Cambiar a la siguiente imagen en la lista
             currentImageIndex = (currentImageIndex + 1) % imagePaths.size();
 
-            // Cargar la nueva imagen
             if (!texture.loadFromFile("assets/images/" + imagePaths[currentImageIndex]))
             {
                 throw "No se encontró la imagen";
             }
-            sprite.setTexture(texture); // Actualizar el sprite con la nueva textura
+            sprite.setTexture(texture);
 
-            clock.restart(); // Reiniciar el reloj
+            clock.restart();
         }
+    }
+
+    // Método público para obtener la fuente
+    sf::Font &getFont()
+    {
+        return font;
     }
 };
 
@@ -347,6 +343,16 @@ int main()
     Personaje Ken(sf::Vector2f(440, 240), "pikachu.png", control1, {381, 55});
     Personaje Pika(sf::Vector2f(130, 240), "pikachu.png", control2, {8, 55});
 
+    // Crear el texto de victoria
+    sf::Text winText;
+    winText.setFont(menu.getFont());        // Usamos el método público para acceder a la fuente
+    winText.setCharacterSize(30);           // Tamaño del texto
+    winText.setFillColor(sf::Color::White); // Color blanco para el texto
+
+    bool gameOver = false;   // Para controlar si el juego terminó
+    std::string winner = ""; // Para almacenar quién ganó
+
+    // Ciclo para mostrar el menú
     while (window.isOpen())
     {
         sf::Event event;
@@ -362,8 +368,7 @@ int main()
         // Si se presiona Enter, iniciar el juego
         if (menu.IniciarJuego())
         {
-            // Aquí puedes agregar la lógica para iniciar el juego
-            break;
+            break; // Salir del ciclo de menú y comenzar el juego
         }
 
         window.clear();
@@ -389,10 +394,41 @@ int main()
 
         Colision::manejar(Ken, Pika);
 
+        // Comprobar si alguien ha ganado
+        if (Ken.getHealth() == 0)
+        {
+            winner = "¡Gano Pika!";
+            gameOver = true;
+        }
+        else if (Pika.getHealth() == 0)
+        {
+            winner = "¡Gano Ken!";
+            gameOver = true;
+        }
+
         window.clear();
-        campo.Dibujar(window);
-        Ken.Dibujar(window);
-        Pika.Dibujar(window);
+
+        // Si el juego ha terminado, mostrar el mensaje de victoria
+        if (gameOver)
+        {
+            winText.setString(winner);                                                                                                                      // Establecer el texto del ganador
+            winText.setPosition(window.getSize().x / 2 - winText.getLocalBounds().width / 2, window.getSize().y / 2 - winText.getLocalBounds().height / 2); // Centrar el texto
+            window.draw(winText);                                                                                                                           // Dibujar el texto de victoria
+            window.display();                                                                                                                               // Mostrar el mensaje de victoria
+
+            // Esperar un momento antes de cerrar el juego
+            sf::sleep(sf::seconds(2)); // Esperar 2 segundos para que el jugador vea el mensaje de victoria
+
+            break; // Salir del ciclo para cerrar el juego después de la victoria
+        }
+        else
+        {
+            // Si el juego no ha terminado, se sigue actualizando y dibujando los personajes
+            campo.Dibujar(window);
+            Ken.Dibujar(window);
+            Pika.Dibujar(window);
+        }
+
         window.display();
     }
 
