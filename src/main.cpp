@@ -11,7 +11,7 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(640, 435), "ST");
+    sf::RenderWindow window(sf::VideoMode(640, 435), "Street pikachu");
 
     // Crear una lista de imágenes que se mostrarán en el menú
     std::vector<std::string> imagenes = {"9.png", "25.png", "14.png", "2.png", "26.png", "10.png", "3.png"};
