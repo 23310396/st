@@ -1,32 +1,45 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <string>
 
 class Vida
 {
 public:
-  Vida(int maxHealth, sf::Vector2f size, sf::Vector2f position);
+  Vida(int maxHealth, sf::Vector2f position);
   void takeDamage(int damage);
   void heal(int amount);
   void draw(sf::RenderWindow &window) const;
-  int getCurrentHealth() const; // Nuevo método para obtener la salud actual
+  int getCurrentHealth() const;
 
 private:
   int maxHealth;
   int currentHealth;
-  sf::RectangleShape backgroundBar;
-  sf::RectangleShape healthBar;
+  sf::Font font;
+  sf::Text healthText;
 };
 
-Vida::Vida(int maxHealth, sf::Vector2f size, sf::Vector2f position)
-    : maxHealth(maxHealth), currentHealth(maxHealth),
-      backgroundBar(size), healthBar(size)
+ sf::Font font;
+  if (!font.loadFromFile("./assets/fonts/Minecraft.ttf"))
+  {
+    // Manejar el error si no se puede cargar la fuente
+    return -1;
+  }
+
+Vida::Vida(int maxHealth, sf::Vector2f position,)
+    : maxHealth(maxHealth), currentHealth(maxHealth)
 {
+  sf::Font font;
+  if (!font.loadFromFile("./assets/fonts/Minecraft.ttf"))
+  {
+    // Manejar el error si no se puede cargar la fuente
+    return -1;
+  }
 
-  backgroundBar.setPosition(position);
-  backgroundBar.setFillColor(sf::Color(50, 50, 50));
-
-  healthBar.setPosition(position);
-  healthBar.setFillColor(sf::Color(100, 250, 50));
+  healthText.setFont(font);
+  healthText.setCharacterSize(24);
+  healthText.setFillColor(sf::Color::Red);
+  healthText.setPosition(position);
+  healthText.setString(std::to_string(currentHealth) + "/" + std::to_string(maxHealth));
 }
 
 void Vida::takeDamage(int damage)
@@ -34,9 +47,7 @@ void Vida::takeDamage(int damage)
   currentHealth -= damage;
   if (currentHealth < 0)
     currentHealth = 0;
-
-  float healthPercentage = static_cast<float>(currentHealth) / maxHealth;
-  healthBar.setSize({backgroundBar.getSize().x * healthPercentage, healthBar.getSize().y});
+  healthText.setString(std::to_string(currentHealth) + "/" + std::to_string(maxHealth));
 }
 
 void Vida::heal(int amount)
@@ -44,18 +55,15 @@ void Vida::heal(int amount)
   currentHealth += amount;
   if (currentHealth > maxHealth)
     currentHealth = maxHealth;
-
-  float healthPercentage = static_cast<float>(currentHealth) / maxHealth;
-  healthBar.setSize({healthBar.getSize().x * healthPercentage, healthBar.getSize().y});
+  healthText.setString(std::to_string(currentHealth) + "/" + std::to_string(maxHealth));
 }
 
 void Vida::draw(sf::RenderWindow &window) const
 {
-  window.draw(backgroundBar);
-  window.draw(healthBar);
+  window.draw(healthText);
 }
 
 int Vida::getCurrentHealth() const
 {
-  return currentHealth; // Devuelve la salud actual
+  return currentHealth;
 }

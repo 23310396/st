@@ -93,6 +93,13 @@ int main()
             pika.atacando = false; // Resetea el estado de ataque después de atacar
         }
 
+        // Verificar si el juego ha terminado
+        if (Ken.getHealth() <= 0 || pika.getHealth() <= 0)
+        {
+            std::cout << (Ken.getHealth() <= 0 ? "Pika gana!" : "Ken gana!") << std::endl;
+            window.close(); // Cerrar la ventana si un personaje ha ganado
+        }
+
         // Dibujar objetos
         window.clear();
         campo.Dibujar(window);

@@ -29,12 +29,14 @@ public:
     sf::FloatRect getBounds() const;
     void Atacar();
     void takeDamage(int damage); // Método para reducir vida
+    int getHealth() const;       // Nuevo método para obtener la salud actual
 };
 
+// Implementación de la clase Personaje
+
 Personaje::Personaje(sf::Vector2f position, std::string imagen, Control control, sf::Vector2f healthBarPosition)
-    : control(control), healthBar(100, {250, 30}, healthBarPosition) // Inicializar barra de vida
+    : control(control), healthBar(100, healthBarPosition) // Inicializar barra de vida
 {
-    // Cargar la imagen desde un archivo
     if (!texture.loadFromFile("assets/images/" + imagen))
     {
         throw "No se encontró imagen";
@@ -58,10 +60,9 @@ void Personaje::Actualizar()
 {
     if (atacando)
     {
-        // Reseteamos el estado de ataque después de un breve periodo
         atacando = false;
     }
-    // Actualizar el frame de la animación
+
     if (clock.getElapsedTime().asSeconds() >= frameTime)
     {
         cuadroActual = (cuadroActual + 1) % numFrames;
@@ -91,7 +92,7 @@ void Personaje::LeerTeclado(sf::Keyboard::Key teclaAtaque)
         this->Mover(0, velocidad);
     }
     if (sf::Keyboard::isKeyPressed(teclaAtaque))
-    { // Tecla de ataque
+    {
         Atacar();
         std::cout << "Ataque ejecutado!" << std::endl;
     }
@@ -100,14 +101,21 @@ void Personaje::LeerTeclado(sf::Keyboard::Key teclaAtaque)
 void Personaje::Atacar()
 {
     atacando = true;
-    // Aquí podrías agregar animaciones de ataque o cualquier otra lógica
-    std::cout << "Personaje esta atacando!" << std::endl;
+    sprite.setTextureRect(sf::IntRect(64, 64, frameWidth, frameHeight)); // Frame de ataque
+    clock.restart();
+    std::cout << "Personaje está atacando!" << std::endl;
 }
 
 void Personaje::takeDamage(int damage)
 {
     healthBar.takeDamage(damage); // Reducir la vida usando la barra de vida
     std::cout << "Vida del personaje: " << healthBar.getCurrentHealth() << std::endl;
+}
+
+// Nuevo método para obtener la vida actual del personaje
+int Personaje::getHealth() const
+{
+    return healthBar.getCurrentHealth();
 }
 
 const sf::Sprite &Personaje::getSprite() const
