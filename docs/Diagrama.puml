@@ -1,0 +1,43 @@
+@startuml
+
+class Campo {
+    +dibujar()
+    +actualizar()
+}
+
+class Control {
+    +arriba()
+    +abajo()
+    +izquierda()
+    +derecha()
+}
+
+class Menu {
+    +mostrarOpciones()
+    +seleccionarOpcion()
+}
+
+class Personaje {
+    +actualizarPosicion()
+    +obtenerEstado()
+}
+
+class Vida {
+    +perderVida()
+    +ganarVida()
+    +obtenerVidasRestantes()
+}
+
+class Juego {
+    +inicializar()
+    +iniciarLoop()
+    +finalizar()
+}
+
+Menu "1" --o "1" Juego : usa
+Control "1" --o "1" Juego : usa
+Personaje "1" --|> "1..*" Control : es
+Campo "1" --* "1" Juego : tiene
+Vida "0..*" --* "1" Personaje : tiene
+
+@enduml

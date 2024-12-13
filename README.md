@@ -12,13 +12,11 @@ En un mundo donde la electricidad es el poder supremo, dos Pikachus se enfrentan
 1. **Inicio del Juego**: Ejecuta el archivo `start_game.exe`.
 2. **Controles**:
    - **Jugador 1**:
-     - **Moverse**: Usa las teclas de flecha.
-     - **Atacar**: Presiona la tecla `A`.
-     - **Defenderse**: Presiona la tecla `D`.
-   - **Jugador 2**:
      - **Moverse**: Usa las teclas `WASD`.
      - **Atacar**: Presiona la tecla `F`.
-     - **Defenderse**: Presiona la tecla `G`.
+   - **Jugador 2**:
+     - **Moverse**: Usa las flechas .
+     - **Atacar**: Presiona la tecla `Ñ`.
 3. **Objetivo**: Derrota al otro Pikachu para ganar la herencia.
 
 ## Manual para el Programador
@@ -30,7 +28,9 @@ En un mundo donde la electricidad es el poder supremo, dos Pikachus se enfrentan
 2. **Navega a la Carpeta del Proyecto**
     cd st
 3. **Compila el Codigo**
-    make all
+    make runmain
 4. **Ejecuta el Juego**
-    ./start_game
+    ./bin/main.exe
     
+## Diagrama de Clases
+![No se Pudo Cargar la Imagen](./docs/Diagrama.png)
