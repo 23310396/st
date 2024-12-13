@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "Control.hpp"
+#include <Control.hpp>
 #include <iostream>
 
 class Personaje

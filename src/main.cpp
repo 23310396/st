@@ -1,9 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include "Personaje.hpp"
-#include "Control.hpp"
-#include "Vida.hpp"
-#include "Menu.hpp"
+#include <Personaje.hpp>
+#include <Control.hpp>
+#include <Vida.hpp>
+#include <Campo>
+//#include "Menu.hpp"
 #include <iostream>
 
 // Función de colisión y resolución
@@ -52,11 +53,12 @@ int main()
     Control control1;
     Control control2(sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::D, sf::Keyboard::A);
 
-    std::vector<std::string> menuItems = {"Mapa 1", "Mapa 2", "Mapa 3"};
-    std::vector<std::string> mapFiles = {"1.png", "25.png", "11.png"};
-    Game game(640, 435, menuItems, mapFiles);
-    game.run();
+    // std::vector<std::string> menuItems = {"Mapa 1", "Mapa 2", "Mapa 3"};
+    // std::vector<std::string> mapFiles = {"1.png", "25.png", "11.png"};
+    // Game game(640, 435, menuItems, mapFiles);
+    // game.run();
 
+    Campo campo("25.png");
     HealthBar playerHealth_1(100, {250, 30}, {381, 55});
     HealthBar playerHealth_2(100, {250, 30}, {8, 55});
     Personaje Ken(sf::Vector2f(440, 240), "pikachu.png", control1);
