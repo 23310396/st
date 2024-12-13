@@ -116,16 +116,6 @@ int main()
         Ken.Dibujar(window);
         pika.Dibujar(window);
 
-        // Mostrar el puntaje de ambos personajes
-        sf::Text scoreText;
-        scoreText.setFont(font);
-        scoreText.setString("Puntaje de Ken: " + std::to_string(Ken.getScore()) + "  |  Puntaje de Pika: " + std::to_string(pika.getScore()));
-        scoreText.setCharacterSize(24);
-        scoreText.setFillColor(sf::Color::White);
-        scoreText.setPosition(10, 10); // Ajusta la posición de acuerdo a tu preferencia
-
-        window.draw(scoreText); // Dibujar el puntaje
-
         window.display();
     }
 

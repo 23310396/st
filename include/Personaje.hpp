@@ -109,13 +109,13 @@ void Personaje::Atacar()
     atacando = true;
     sprite.setTextureRect(sf::IntRect(64, 64, frameWidth, frameHeight)); // Frame de ataque
     clock.restart();
-    std::cout << "Personaje está atacando!" << std::endl;
+    std::cout << "Personaje esta atacando!" << std::endl;
 }
 
 void Personaje::takeDamage(int damage)
 {
-    healthBar.takeDamage(damage); // Reducir la vida usando la barra de vida
-    std::cout << "Vida del personaje: " << healthBar.getCurrentHealth() << std::endl;
+    healthBar.takeDamage(damage); // Reducir vida usando la barra de vida
+    std::cout << "Vida actual: " << healthBar.getCurrentHealth() << std::endl;
 }
 
 // Nuevo método para obtener la vida actual del personaje

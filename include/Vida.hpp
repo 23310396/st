@@ -31,7 +31,7 @@ Vida::Vida(int maxHealth, sf::Vector2f position)
   // Configurar el objeto de texto que mostrará la vida
   healthText.setFont(font);
   healthText.setCharacterSize(24);         // Tamaño del texto
-  healthText.setFillColor(sf::Color::Red); // Color del texto
+  healthText.setFillColor(sf::Color::Green); // Color del texto
   healthText.setPosition(position);        // Posición en la ventana
   healthText.setString(std::to_string(currentHealth) + "/" + std::to_string(maxHealth));
 }
@@ -40,22 +40,20 @@ void Vida::takeDamage(int damage)
 {
   currentHealth -= damage;
   if (currentHealth < 0)
+  {
     currentHealth = 0;
-  healthText.setString(std::to_string(currentHealth) + "/" + std::to_string(maxHealth));
+  }
 }
 
-void Vida::heal(int amount)
+void Vida::draw(sf::RenderWindow &window)
 {
-  currentHealth += amount;
-  if (currentHealth > maxHealth)
-    currentHealth = maxHealth;
-  healthText.setString(std::to_string(currentHealth) + "/" + std::to_string(maxHealth));
+    // Rectángulo que representa la vida actual
+    sf::RectangleShape healthBar(sf::Vector2f(currentHealth, 10));
+    healthBar.setFillColor(sf::Color::Red);
+    healthBar.setPosition(position); // Posición de la barra
+    window.draw(healthBar);
 }
 
-void Vida::draw(sf::RenderWindow &window) const
-{
-  window.draw(healthText);
-}
 
 int Vida::getCurrentHealth() const
 {
