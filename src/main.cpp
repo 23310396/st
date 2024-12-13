@@ -4,7 +4,6 @@
 #include <Control.hpp>
 #include <Vida.hpp>
 #include <Campo.hpp>
-//#include "Menu.hpp"
 #include <iostream>
 
 // Función de colisión y resolución
@@ -54,10 +53,8 @@ int main()
     Control control2(sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::D, sf::Keyboard::A);
 
     Campo campo("25.png");
-    HealthBar playerHealth_1(100, {250, 30}, {381, 55});
-    HealthBar playerHealth_2(100, {250, 30}, {8, 55});
-    Personaje Ken(sf::Vector2f(440, 240), "pikachu.png", control1);
-    Personaje pika(sf::Vector2f(130, 240), "pikachu.png", control2);
+    Personaje Ken(sf::Vector2f(440, 240), "pikachu.png", control1, {381, 55});
+    Personaje pika(sf::Vector2f(130, 240), "pikachu.png", control2, {8, 55});
 
     while (window.isOpen())
     {
@@ -71,7 +68,7 @@ int main()
         }
 
         // Leer el teclado con teclas de ataque diferentes
-        Ken.LeerTeclado(sf::Keyboard::K); // Tecla de ataque para Ken
+        Ken.LeerTeclado(sf::Keyboard::K);  // Tecla de ataque para Ken
         pika.LeerTeclado(sf::Keyboard::F); // Tecla de ataque para pika
 
         // Actualizar objetos
@@ -87,15 +84,13 @@ int main()
         // Lógica de ataque y reducción de vida
         if (Ken.atacando && checkCollision(Ken, pika))
         {
-            playerHealth_2.takeDamage(10);// Reduce la vida de pika
-            Ken.atacando = false;// Resetea el estado de ataque después de atacar
-            std::cout << "Vida de pika: " << playerHealth_2.getCurrentHealth() << std::endl; // Mensaje de depuración
+            pika.takeDamage(10);  // Reduce la vida de pika
+            Ken.atacando = false; // Resetea el estado de ataque después de atacar
         }
         if (pika.atacando && checkCollision(pika, Ken))
         {
-            playerHealth_1.takeDamage(10);// Reduce la vida de Ken
-            pika.atacando = false;// Resetea el estado de ataque después de atacar
-            std::cout << "Vida de Ken: " << playerHealth_1.getCurrentHealth() << std::endl; // Mensaje de depuración
+            Ken.takeDamage(10);    // Reduce la vida de Ken
+            pika.atacando = false; // Resetea el estado de ataque después de atacar
         }
 
         // Dibujar objetos
@@ -103,8 +98,6 @@ int main()
         campo.Dibujar(window);
         Ken.Dibujar(window);
         pika.Dibujar(window);
-        playerHealth_1.draw(window);
-        playerHealth_2.draw(window);
         window.display();
     }
 

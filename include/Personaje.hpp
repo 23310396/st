@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <Control.hpp>
+#include <Vida.hpp>
 #include <iostream>
 
 class Personaje
@@ -14,22 +15,24 @@ private:
     int frameWidth = 32;
     int frameHeight = 32;
     Control control;
+    Vida healthBar; // Usar la clase Vida
 
 public:
     bool atacando = false; // Estado de ataque
     sf::Sprite sprite;
-    Personaje(sf::Vector2f position, std::string imagen, Control control);
+    Personaje(sf::Vector2f position, std::string imagen, Control control, sf::Vector2f healthBarPosition);
     void Mover(float offsetX, float offsetY);
     void Dibujar(sf::RenderWindow &window);
     void Actualizar();
-    void LeerTeclado(sf::Keyboard::Key teclaAtaque); // Modificado para recibir tecla de ataque
+    void LeerTeclado(sf::Keyboard::Key teclaAtaque);
     const sf::Sprite &getSprite() const;
     sf::FloatRect getBounds() const;
-    void Atacar(); // Nuevo método para atacar
+    void Atacar();
+    void takeDamage(int damage); // Método para reducir vida
 };
 
-Personaje::Personaje(sf::Vector2f position, std::string imagen, Control control)
-    : control(control)
+Personaje::Personaje(sf::Vector2f position, std::string imagen, Control control, sf::Vector2f healthBarPosition)
+    : control(control), healthBar(100, {250, 30}, healthBarPosition) // Inicializar barra de vida
 {
     // Cargar la imagen desde un archivo
     if (!texture.loadFromFile("assets/images/" + imagen))
@@ -48,6 +51,7 @@ void Personaje::Mover(float offsetX, float offsetY)
 void Personaje::Dibujar(sf::RenderWindow &window)
 {
     window.draw(this->sprite);
+    healthBar.draw(window); // Dibujar la barra de vida
 }
 
 void Personaje::Actualizar()
@@ -98,6 +102,12 @@ void Personaje::Atacar()
     atacando = true;
     // Aquí podrías agregar animaciones de ataque o cualquier otra lógica
     std::cout << "Personaje esta atacando!" << std::endl;
+}
+
+void Personaje::takeDamage(int damage)
+{
+    healthBar.takeDamage(damage); // Reducir la vida usando la barra de vida
+    std::cout << "Vida del personaje: " << healthBar.getCurrentHealth() << std::endl;
 }
 
 const sf::Sprite &Personaje::getSprite() const
