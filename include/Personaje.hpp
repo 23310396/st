@@ -22,10 +22,10 @@ public:
     void Mover(float offsetX, float offsetY);
     void Dibujar(sf::RenderWindow &window);
     void Actualizar();
-    void LeerTeclado();
+    void LeerTeclado(sf::Keyboard::Key teclaAtaque); // Modificado para recibir tecla de ataque
     const sf::Sprite &getSprite() const;
     sf::FloatRect getBounds() const;
-    void atacar(); // Nuevo método para atacar
+    void Atacar(); // Nuevo método para atacar
 };
 
 Personaje::Personaje(sf::Vector2f position, std::string imagen, Control control)
@@ -66,15 +66,17 @@ void Personaje::Actualizar()
     }
 }
 
-void Personaje::LeerTeclado()
+void Personaje::LeerTeclado(sf::Keyboard::Key teclaAtaque)
 {
     if (sf::Keyboard::isKeyPressed(control.MoverIzquierda()))
     {
         this->Mover(velocidad * -1, 0);
+        sprite.setScale(-1.f, 1.f); // Voltear el sprite horizontalmente
     }
     if (sf::Keyboard::isKeyPressed(control.MoverDerecha()))
     {
         this->Mover(velocidad, 0);
+        sprite.setScale(1.f, 1.f); // Restaurar el sprite a su orientación original
     }
     if (sf::Keyboard::isKeyPressed(control.MoverArriba()))
     {
@@ -84,14 +86,14 @@ void Personaje::LeerTeclado()
     {
         this->Mover(0, velocidad);
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+    if (sf::Keyboard::isKeyPressed(teclaAtaque))
     { // Tecla de ataque
-        atacar();
+        Atacar();
         std::cout << "Ataque ejecutado!" << std::endl;
     }
 }
 
-void Personaje::atacar()
+void Personaje::Atacar()
 {
     atacando = true;
     // Aquí podrías agregar animaciones de ataque o cualquier otra lógica

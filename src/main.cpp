@@ -3,7 +3,7 @@
 #include <Personaje.hpp>
 #include <Control.hpp>
 #include <Vida.hpp>
-#include <Campo>
+#include <Campo.hpp>
 //#include "Menu.hpp"
 #include <iostream>
 
@@ -53,11 +53,6 @@ int main()
     Control control1;
     Control control2(sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::D, sf::Keyboard::A);
 
-    // std::vector<std::string> menuItems = {"Mapa 1", "Mapa 2", "Mapa 3"};
-    // std::vector<std::string> mapFiles = {"1.png", "25.png", "11.png"};
-    // Game game(640, 435, menuItems, mapFiles);
-    // game.run();
-
     Campo campo("25.png");
     HealthBar playerHealth_1(100, {250, 30}, {381, 55});
     HealthBar playerHealth_2(100, {250, 30}, {8, 55});
@@ -75,9 +70,9 @@ int main()
             }
         }
 
-        // Leer el teclado
-        Ken.LeerTeclado();
-        pika.LeerTeclado();
+        // Leer el teclado con teclas de ataque diferentes
+        Ken.LeerTeclado(sf::Keyboard::K); // Tecla de ataque para Ken
+        pika.LeerTeclado(sf::Keyboard::F); // Tecla de ataque para pika
 
         // Actualizar objetos
         Ken.Actualizar();
@@ -105,6 +100,7 @@ int main()
 
         // Dibujar objetos
         window.clear();
+        campo.Dibujar(window);
         Ken.Dibujar(window);
         pika.Dibujar(window);
         playerHealth_1.draw(window);
