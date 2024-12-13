@@ -1,3 +1,4 @@
+#pragma once
 #include <SFML/Graphics.hpp>
 #include <Control.hpp>
 #include <Vida.hpp>
@@ -15,133 +16,99 @@ private:
     int frameWidth = 32;
     int frameHeight = 32;
     Control control;
-    Vida healthBar; // Usar la clase Vida
-    int score = 0;  // Variable para almacenar el puntaje
+    Vida healthBar;
+    int score = 0;
 
 public:
-    bool atacando = false; // Estado de ataque
+    bool atacando = false;
+    bool puedeAtacar = true; // Nuevo flag para controlar el ataque
+
     sf::Sprite sprite;
 
-    Personaje(sf::Vector2f position, std::string imagen, Control control, sf::Vector2f healthBarPosition);
-    void Mover(float offsetX, float offsetY);
-    void Dibujar(sf::RenderWindow &window);
-    void Actualizar();
-    void LeerTeclado(sf::Keyboard::Key teclaAtaque);
-    const sf::Sprite &getSprite() const;
-    sf::FloatRect getBounds() const;
-    void Atacar();
-    void takeDamage(int damage); // Método para reducir vida
-    int getHealth() const;       // Nuevo método para obtener la salud actual
+    Personaje(sf::Vector2f position, std::string imagen, Control control, sf::Vector2f healthBarPosition)
+        : control(control), healthBar(100, healthBarPosition)
+    {
+        if (!texture.loadFromFile("assets/images/" + imagen))
+        {
+            throw "No se encontró imagen";
+        }
+        sprite = sf::Sprite(texture);
+        sprite.setPosition(position);
+    }
 
-    // Métodos para manejar el puntaje
-    void increaseScore(int points); // Método para aumentar el puntaje
-    int getScore() const;           // Método para obtener el puntaje
+    void mover(float offsetX, float offsetY)
+    {
+        sprite.move(offsetX, offsetY);
+    }
+
+    void dibujar(sf::RenderWindow &window)
+    {
+        window.draw(sprite);
+        healthBar.dibujar(window);
+    }
+
+    void actualizar()
+    {
+        if (clock.getElapsedTime().asSeconds() >= frameTime)
+        {
+            cuadroActual = (cuadroActual + 1) % numFrames;
+            sprite.setTextureRect(sf::IntRect((cuadroActual * 64) + 17, 133, 64, 36));
+            clock.restart();
+        }
+        if (clock.getElapsedTime().asSeconds() >= frameTime)
+        {
+            cuadroActual = (cuadroActual + 1) % numFrames; // Cambia al siguiente cuadro
+            int left = cuadroActual * frameWidth;          // Coordenada x del cuadro actual
+            int top = 0;                                   // Coordenada y (fila 0)
+            sprite.setTextureRect(sf::IntRect(left, top, frameWidth, frameHeight));
+            clock.restart();
+        }
+    }
+
+    void leerTeclado(sf::Keyboard::Key teclaAtaque)
+    {
+        if (sf::Keyboard::isKeyPressed(control.moverIzquierda()))
+        {
+            mover(-velocidad, 0);
+            sprite.setScale(-1.f, 1.f); // Voltear el sprite horizontalmente
+        }
+        else if (sf::Keyboard::isKeyPressed(control.moverDerecha()))
+        {
+            mover(velocidad, 0);
+            sprite.setScale(1.f, 1.f); // Restaurar el sprite a su orientación original
+        }
+
+        if (sf::Keyboard::isKeyPressed(control.moverArriba()))
+            mover(0, -velocidad);
+        if (sf::Keyboard::isKeyPressed(control.moverAbajo()))
+            mover(0, velocidad);
+
+        // Solo atacar si la tecla de ataque está presionada y el personaje puede atacar
+        if (sf::Keyboard::isKeyPressed(teclaAtaque) && puedeAtacar)
+        {
+            atacando = true;
+            puedeAtacar = false; // Desactivar ataque hasta que se suelte la tecla
+        }
+
+        // Permitir que el personaje pueda atacar de nuevo cuando se suelta la tecla
+        if (!sf::Keyboard::isKeyPressed(teclaAtaque))
+        {
+            puedeAtacar = true; // Permitir el siguiente ataque
+        }
+    }
+
+    void takeDamage(int damage)
+    {
+        healthBar.takeDamage(damage);
+    }
+
+    int getHealth() const
+    {
+        return healthBar.getCurrentHealth();
+    }
+
+    sf::FloatRect getBounds() const
+    {
+        return sprite.getGlobalBounds();
+    }
 };
-
-// Implementación de la clase Personaje
-
-Personaje::Personaje(sf::Vector2f position, std::string imagen, Control control, sf::Vector2f healthBarPosition)
-    : control(control), healthBar(100, healthBarPosition) // Inicializar barra de vida
-{
-    if (!texture.loadFromFile("assets/images/" + imagen))
-    {
-        throw "No se encontró imagen";
-    }
-    this->sprite = sf::Sprite(texture);
-    this->sprite.setPosition(position); // Posición inicial del sprite
-}
-
-void Personaje::Mover(float offsetX, float offsetY)
-{
-    sprite.move(offsetX, offsetY);
-}
-
-void Personaje::Dibujar(sf::RenderWindow &window)
-{
-    window.draw(this->sprite);
-    healthBar.draw(window); // Dibujar la barra de vida
-}
-
-void Personaje::Actualizar()
-{
-    if (atacando)
-    {
-        atacando = false;
-    }
-
-    if (clock.getElapsedTime().asSeconds() >= frameTime)
-    {
-        cuadroActual = (cuadroActual + 1) % numFrames;
-        sprite.setTextureRect(sf::IntRect((cuadroActual * 64) + 17, 133, 64, 36));
-        clock.restart();
-    }
-}
-
-void Personaje::LeerTeclado(sf::Keyboard::Key teclaAtaque)
-{
-    if (sf::Keyboard::isKeyPressed(control.MoverIzquierda()))
-    {
-        this->Mover(velocidad * -1, 0);
-        sprite.setScale(-1.f, 1.f); // Voltear el sprite horizontalmente
-    }
-    if (sf::Keyboard::isKeyPressed(control.MoverDerecha()))
-    {
-        this->Mover(velocidad, 0);
-        sprite.setScale(1.f, 1.f); // Restaurar el sprite a su orientación original
-    }
-    if (sf::Keyboard::isKeyPressed(control.MoverArriba()))
-    {
-        this->Mover(0, velocidad * -1);
-    }
-    if (sf::Keyboard::isKeyPressed(control.MoverAbajo()))
-    {
-        this->Mover(0, velocidad);
-    }
-    if (sf::Keyboard::isKeyPressed(teclaAtaque))
-    {
-        Atacar();
-        std::cout << "Ataque ejecutado!" << std::endl;
-    }
-}
-
-void Personaje::Atacar()
-{
-    atacando = true;
-    sprite.setTextureRect(sf::IntRect(64, 64, frameWidth, frameHeight)); // Frame de ataque
-    clock.restart();
-    std::cout << "Personaje esta atacando!" << std::endl;
-}
-
-void Personaje::takeDamage(int damage)
-{
-    healthBar.takeDamage(damage); // Reducir vida usando la barra de vida
-    std::cout << "Vida actual: " << healthBar.getCurrentHealth() << std::endl;
-}
-
-// Nuevo método para obtener la vida actual del personaje
-int Personaje::getHealth() const
-{
-    return healthBar.getCurrentHealth();
-}
-
-const sf::Sprite &Personaje::getSprite() const
-{
-    return sprite;
-}
-
-sf::FloatRect Personaje::getBounds() const
-{
-    return sprite.getGlobalBounds();
-}
-
-// Método para aumentar el puntaje
-void Personaje::increaseScore(int points)
-{
-    score += points;
-}
-
-// Método para obtener el puntaje
-int Personaje::getScore() const
-{
-    return score;
-}

@@ -4,58 +4,45 @@
 
 class Vida
 {
-public:
-  Vida(int maxHealth, sf::Vector2f position);
-  void takeDamage(int damage);
-  void heal(int amount);
-  void draw(sf::RenderWindow &window) const;
-  int getCurrentHealth() const;
-
 private:
   int maxHealth;
   int currentHealth;
   sf::Font font;
   sf::Text healthText;
-};
+  sf::Vector2f position;
 
-Vida::Vida(int maxHealth, sf::Vector2f position)
-    : maxHealth(maxHealth), currentHealth(maxHealth)
-{
-  // Cargar la fuente para el texto de la vida
-  if (!font.loadFromFile("./assets/fonts/Minecraft.ttf"))
+public:
+  Vida(int maxHealth, sf::Vector2f position)
+      : maxHealth(maxHealth), currentHealth(maxHealth), position(position)
   {
-    // Manejar el error si no se puede cargar la fuente
-    throw std::runtime_error("No se pudo cargar la fuente");
+    if (!font.loadFromFile("./assets/fonts/Minecraft.ttf"))
+    {
+      throw std::runtime_error("No se pudo cargar la fuente");
+    }
+    healthText.setFont(font);
+    healthText.setCharacterSize(24);
+    healthText.setFillColor(sf::Color::Green);
+    healthText.setPosition(position);
+    healthText.setString(std::to_string(currentHealth) + "/" + std::to_string(maxHealth));
   }
 
-  // Configurar el objeto de texto que mostrará la vida
-  healthText.setFont(font);
-  healthText.setCharacterSize(24);         // Tamaño del texto
-  healthText.setFillColor(sf::Color::Green); // Color del texto
-  healthText.setPosition(position);        // Posición en la ventana
-  healthText.setString(std::to_string(currentHealth) + "/" + std::to_string(maxHealth));
-}
-
-void Vida::takeDamage(int damage)
-{
-  currentHealth -= damage;
-  if (currentHealth < 0)
+  void takeDamage(int damage)
   {
-    currentHealth = 0;
+    currentHealth -= damage;
+    if (currentHealth < 0)
+      currentHealth = 0;
+    healthText.setString(std::to_string(currentHealth) + "/" + std::to_string(maxHealth));
   }
-}
 
-void Vida::draw(sf::RenderWindow &window)
-{
-    // Rectángulo que representa la vida actual
-    sf::RectangleShape healthBar(sf::Vector2f(currentHealth, 10));
+  void dibujar(sf::RenderWindow &window)
+  {
+    sf::RectangleShape healthBar(sf::Vector2f(static_cast<float>(currentHealth) / maxHealth * 100, 10));
     healthBar.setFillColor(sf::Color::Red);
-    healthBar.setPosition(position); // Posición de la barra
+    healthBar.setPosition(position);
+
     window.draw(healthBar);
-}
+    window.draw(healthText);
+  }
 
-
-int Vida::getCurrentHealth() const
-{
-  return currentHealth;
-}
+  int getCurrentHealth() const { return currentHealth; }
+};
