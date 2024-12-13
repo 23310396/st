@@ -80,12 +80,12 @@ int main()
         // Comprobar si alguien ha ganado
         if (ken.getHealth() == 0)
         {
-            winner = "¡Gano Pika!";
+            winner = "¡Gano Jugador 1!";
             gameOver = true;
         }
         else if (pika.getHealth() == 0)
         {
-            winner = "¡Gano Ken!";
+            winner = "¡Gano jugador 2!";
             gameOver = true;
         }
 
